@@ -16,8 +16,8 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
     meta: {
-      layout: 'AppLayoutAdmin'
-    }
+      layout: "AppLayoutAdmin",
+    },
   },
 ];
 
