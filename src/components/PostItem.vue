@@ -3,39 +3,45 @@
         <div>
         <a href="#">
             <img src="../assets/profile.jpg" alt="Profile picture" class="rounded-full h-8 w-8 inline-block">
-            <span class="ml-2">Imam Setiawan</span>
+            <span class="ml-2">{{ post.author_name }}</span>
         </a>
-        <span class="text-gray-400 ml-2">Des 21</span>
+        <span class="text-gray-400 ml-2">{{ dayjs(post.published_date).format("DD MMMM YYYY") }}</span>
         </div>
         <div class="flex justify-between space-x-10 mt-4">
             <div class="w-3/4">
                 <a href="#">
-                    <h2 class="text-xl md:text-2xl font-bold mb-2">Laravel Best Practices You Should Follow</h2>
+                    <h2 class="text-xl md:text-2xl font-bold mb-2">{{ post.title }}</h2>
                 </a>
                 <div class="hidden md:block">
-                    <p>To make Laravel development a breeze, you need to follow the best practices from time to time. Here
-                        in this article,
-                        I
-                        will be taking up the opportunity to discuss some of such best practices that you should follow...
-                    </p>
+                    {{ post.excerpt }}
                 </div>
-                <div class="mt-4">
-                    <a href="#" class="rounded-full px-4 py-1 border border-gray-900 hover:bg-gray-900 hover:text-white">Laravel</a>
-                </div>
+                <CategoryBadgeGroup :categories="post.categories" />
             </div>
             <div class="w-1/4">
-                <img src="../assets/img.jpg" alt="Laravel">
+                <img :src="post.featured_img" :alt="post.title">
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import CategoryBadgeGroup from "@/components/CategoryBadgeGroup.vue";
+
 export default {
-    name: "PostItem"
+    name: "PostItem",
+    components: {
+        CategoryBadgeGroup
+    },
+    props: {
+        post: {
+            type: Object,
+            required: true
+        }
+    },
+    inject: {
+        dayjs: {
+            from: 'dayjs'
+        }
+    }
 }
 </script>
-
-<style>
-
-</style>
