@@ -10,10 +10,12 @@
         <div class="flex justify-between space-x-10 mt-4">
             <div class="w-3/4">
                 <a href="#">
-                    <h2 class="text-xl md:text-2xl font-bold mb-2">{{ post.title }}</h2>
+                    <h2 class="text-xl md:text-2xl font-bold mb-2 line-clamp-2 m" :title="post.title">{{ post.title }}</h2>
                 </a>
                 <div class="hidden md:block">
-                    {{ post.excerpt }}
+                    <p class="line-clamp-3">
+                        {{ post.excerpt }}
+                    </p>
                 </div>
                 <CategoryBadgeGroup :categories="post.categories" />
             </div>

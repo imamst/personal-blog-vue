@@ -6,25 +6,30 @@
 
 <script>
 import AppLayoutHome from "@/layouts/AppLayoutHome";
+import { markRaw, watch } from "vue";
+import { useRoute } from "vue-router";
 
 export default {
   name: "AppLayout",
-  data: () => ({
-    layout: AppLayoutHome,
-  }),
-  watch: {
-    $route: {
-      immediate: true, //immediate fired on created
-      async handler(route) {
+  setup() {
+    const layout = markRaw(AppLayoutHome);
+    const route = useRoute();
+
+    watch(
+      () => route.meta,
+      async meta => {
         try {
-          const component = await import(`@/layouts/${route.meta.layout}.vue`);
-          this.layout = component?.default || AppLayoutHome;
+          const component = await import(`@/layouts/${meta.layout}.vue`);
+          layout.value = component?.default || AppLayoutHome
         } catch (e) {
-          this.layout = AppLayoutHome;
+          layout.value = AppLayoutHome
         }
       },
-    },
-  },
+      { immediate: true }
+    )
+
+    return { layout }
+  }
 };
 </script>
 
