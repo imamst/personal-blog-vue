@@ -2,7 +2,7 @@ import API from "./API"
 
 export default {
 
-    getLatest(page = 1) {
+    getLatest(page) {
         return API.get(`/public/posts?page=${page}`);
     }
 

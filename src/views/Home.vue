@@ -7,6 +7,7 @@
     <div v-else>
       <h1 class="font-bold text-3xl my-6">Latest Tutorials</h1>
       <PostItem v-for="post in post.posts" :key="post.id" :post="post" />
+      <Pagination :meta="post.pagination_meta" />
     </div>
   </div>
 </template>
@@ -14,13 +15,15 @@
 <script>
 import PostItem from "@/components/PostItem.vue";
 import PostItemSkeleton from "@/components/PostItemSkeleton.vue";
+import Pagination from "@/components/Pagination.vue";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Home",
   components: {
     PostItem,
-    PostItemSkeleton
+    PostItemSkeleton,
+    Pagination
   },
   created() {
     this.fetchPosts();
