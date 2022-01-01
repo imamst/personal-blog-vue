@@ -9,6 +9,11 @@ export default {
             last_page: null
         }
     },
+    getters: {
+        posts: (state, getters) => {
+            return getters.posts;
+        }
+    },
     mutations: {
         SET_POSTS(state, posts) {
             state.posts = posts;

@@ -28,38 +28,51 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex'
 
 export default {
+    beforeUpdate() {
+        window.scrollTo({top: 0, behavior: 'smooth'})
+    },
+    updated() {
+        this.$emit('toggleLoading')
+    },
     props: [
-        'meta'
+        'meta',
+    ],
+    emits: [
+        'toggleLoading',
     ],
     computed: {
         isPaginationFirstDisabled() {
-            return this.meta.current_page == 1;
+            return this.meta.current_page == 1
         },
         isPaginationLastDisabled() {
-            return this.meta.current_page == this.meta.last_page;
-        }
+            return this.meta.current_page == this.meta.last_page
+        },
     },
     methods: {
         ...mapActions('post', ['fetchPosts']),
+        refreshPosts(page = 1) {
+            this.$emit('toggleLoading')
+            this.fetchPosts(page)
+        },
         goToFirstPage() {
-            this.fetchPosts();
+            this.refreshPosts()
         },
         goToPrevPage() {
-            this.fetchPosts(this.meta.current_page - 1);
+            this.refreshPosts(this.meta.current_page - 1)
         },
         goToPage(page) {
-            this.fetchPosts(page);
+            this.refreshPosts(page)
         },
         goToNextPage() {
-            this.fetchPosts(this.meta.current_page + 1);
+            this.refreshPosts(this.meta.current_page + 1)
         },
         goToLastPage() {
-            this.fetchPosts(this.meta.last_page);
-        }
-    }
+            this.refreshPosts(this.meta.last_page);
+        },
+    },
 }
 </script>
 
@@ -71,6 +84,6 @@ export default {
     @apply bg-gray-900 text-white border-gray-900;
 }
 .disabled {
-    @apply cursor-default bg-gray-200 hover:bg-gray-200 hover:text-current hover:border-gray-300;
+    @apply pointer-events-none cursor-default bg-gray-200 hover:bg-gray-200 hover:text-current hover:border-gray-300 opacity-50;
 }
 </style>

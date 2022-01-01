@@ -1,11 +1,11 @@
 <template>
     <div class="py-8 border-b-2 border-gray-200">
         <div>
-        <a href="#">
-            <img src="../assets/profile.jpg" alt="Profile picture" class="rounded-full h-8 w-8 inline-block">
-            <span class="ml-2">{{ post.author_name }}</span>
-        </a>
-        <span class="text-gray-400 ml-2">{{ dayjs(post.published_date).format("DD MMMM YYYY") }}</span>
+            <a href="#">
+                <img src="../assets/profile.jpg" alt="Profile picture" class="rounded-full h-8 w-8 inline-block">
+                <span class="ml-2">{{ post.author_name }}</span>
+            </a>
+            <span class="text-gray-400 ml-2">{{ dayjs(post.published_date).format("DD MMMM YYYY") }}</span>
         </div>
         <div class="flex justify-between space-x-10 mt-4">
             <div class="w-3/4">
@@ -27,23 +27,23 @@
 </template>
 
 <script>
-import CategoryBadgeGroup from "@/components/CategoryBadgeGroup.vue";
+import CategoryBadgeGroup from '@/components/CategoryBadgeGroup.vue'
 
 export default {
-    name: "PostItem",
+    name: 'PostItem',
     components: {
-        CategoryBadgeGroup
+        CategoryBadgeGroup,
     },
     props: {
         post: {
             type: Object,
-            required: true
-        }
+            required: true,
+        },
     },
     inject: {
         dayjs: {
-            from: 'dayjs'
-        }
-    }
+            from: 'dayjs',
+        },
+    },
 }
 </script>
