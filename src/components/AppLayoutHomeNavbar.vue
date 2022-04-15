@@ -6,17 +6,14 @@
                 
                 <div class="hidden md:flex">
                     <div class="text-lg flex mr-4">
-                        <a href="#" class="py-1 px-4 rounded-full border-transparent border-b-2 hover:bg-gray-100">Home</a>
-                        <a href="#" class="py-1 px-4 rounded-full border-transparent border-b-2 hover:bg-gray-100">Blog</a>
-                        <a href="#" class="py-1 px-4 rounded-full border-transparent border-b-2 hover:bg-gray-100">About</a>
-                        <a href="#" class="py-1 px-4 rounded-full border-transparent border-b-2 hover:bg-gray-100">Contact</a>
+                        <a v-for="menu in menus" :key="menu.name" :href="menu.url" class="py-1 px-4 rounded-full border-transparent border-b-2 hover:bg-gray-100">{{ menu.name }}</a>
                     </div>
                 
                     <div class="hidden md:flex items-center">
                         <a href="#" class="inline-block px-6 py-2 mr-4 bg-gray-800 hover:bg-gray-900 text-white rounded-full shadow-lg">Login</a>
-                        <form action="#" method="get">
-                            <input v-model="form.searchPost" type="text"
-                                :class="['ml-2 w-0 outline-none transition-width duration-300 ease-linear', searchExpanded ? 'w-40' : '']" placeholder="Search" ref="searchPost">
+                        <form action="#" method="get" @submit.prevent="searchPosts">
+                            <input v-model="form.keyword" type="text"
+                                :class="['ml-2 w-0 outline-none transition-width duration-300 ease-linear', searchExpanded ? 'w-40' : '']" placeholder="Search" ref="keyword">
                             <svg @click="toggleSearchInput" id="search-icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block text-gray-900 cursor-pointer"
                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -36,13 +33,10 @@
             <!-- mobile menu -->
             <transition @before-enter="beforeEnter" @enter="enter" @leave="leave" :css="false">
                 <div v-if="isMobileNavOpen" class="md:hidden text-left bg-white absolute w-full border-b-2 border-gray-100" data-role="mobile-nav">
-                    <a href="#" class="block py-2 px-8 hover:bg-gray-100">Home</a>
-                    <a href="#" class="block py-2 px-8 hover:bg-gray-100">Blog</a>
-                    <a href="#" class="block py-2 px-8 hover:bg-gray-100">About</a>
-                    <a href="#" class="block py-2 px-8 hover:bg-gray-100">Contact</a>
+                    <a v-for="menu in menus" :key="menu.name" :href="menu.url" class="block py-2 px-8 hover:bg-gray-100">{{ menu.name }}</a>
                     <div class="flex flex-col mt-4 text-center px-8 mb-8">
                         <a href="#" class="inline-block px-6 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-full shadow-lg">Login</a>
-                        <form action="#" method="get" class="mt-8 w-full p-2 border border-gray-200 rounded-full flex">
+                        <form action="#" method="get" @submit.prevent="searchPosts" class="mt-8 w-full p-2 border border-gray-200 rounded-full flex">
                             <input type="text" class="ml-2 outline-none flex-grow"
                                 placeholder="Search">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6  text-gray-400" fill="none" viewBox="0 0 24 24"
@@ -60,15 +54,38 @@
 
 <script>
 import Velocity from 'velocity-animate'
+import { mapActions } from 'vuex'
 
 export default {
     name: 'AppLayoutHomeNavbar',
     data() {
         return {
+            menus: [
+                {
+                    name: 'Home',
+                    url: '#',
+                    isActive: false,
+                },
+                {
+                    name: 'Blog',
+                    url: '#',
+                    isActive: false,
+                },
+                {
+                    name: 'About',
+                    url: '#',
+                    isActive: false,
+                },
+                {
+                    name: 'Contact',
+                    url: '#',
+                    isActive: false,
+                },
+            ],
             searchExpanded: false,
             searchInputFocused: false,
             form: {
-                searchPost: ''
+                keyword: ''
             },
             isMobileNavOpen: false
         }
@@ -79,10 +96,10 @@ export default {
             this.searchInputFocused = !this.searchInputFocused
 
             if(this.searchInputFocused) {
-                this.$refs.searchPost.focus()
+                this.$refs.keyword.focus()
             } else {
-                this.$refs.searchPost.blur()
-                this.form.searchPost = ''
+                this.$refs.keyword.blur()
+                this.form.keyword = ''
             }
         },
         beforeEnter(el) {
@@ -102,7 +119,8 @@ export default {
                 { opacity: 0, maxHeight: '0px' },
                 { duration: 500, easing: 'easeInCubic', complete: done }
             )
-        }
+        },
+        ...mapActions('post', ['searchPosts']),
     }
 }
 </script>

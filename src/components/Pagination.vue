@@ -10,8 +10,20 @@
                 <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
         </a>
-        <a type="button" @click="goToPage(n)" :class="['pagination-button', meta.current_page == n ? 'active' : '']" v-for="n in meta.last_page" :key="n">
-            {{ n }}
+        <a v-if="meta.current_page > 2" type="button" @click="goToPage(meta.current_page - 2)" :class="['pagination-button']">
+            {{ meta.current_page - 2 }}
+        </a>
+        <a v-if="meta.current_page > 1" type="button" @click="goToPage(meta.current_page - 1)" :class="['pagination-button']">
+            {{ meta.current_page - 1 }}
+        </a>
+        <a type="button" @click="goToPage(meta.current_page)" :class="['pagination-button', 'active']">
+            {{ meta.current_page }}
+        </a>
+        <a v-if="meta.current_page < meta.last_page" type="button" @click="goToPage(meta.current_page + 1)" :class="['pagination-button']">
+            {{ meta.current_page + 1 }}
+        </a>
+        <a v-if="meta.current_page < (meta.last_page - 1)" type="button" @click="goToPage(meta.current_page + 2)" :class="['pagination-button']">
+            {{ meta.current_page + 2 }}
         </a>
         <a type="button" @click="goToNextPage" :disabled="isPaginationLastDisabled" :class="['pagination-button', isPaginationLastDisabled ? 'disabled' : '']">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -40,15 +52,12 @@ export default {
     props: [
         'meta',
     ],
-    emits: [
-        'toggleLoading',
-    ],
     computed: {
         isPaginationFirstDisabled() {
-            return this.meta.current_page == 1
+            return this.meta.current_page <= 1
         },
         isPaginationLastDisabled() {
-            return this.meta.current_page == this.meta.last_page
+            return this.meta.current_page >= this.meta.last_page
         },
     },
     methods: {
